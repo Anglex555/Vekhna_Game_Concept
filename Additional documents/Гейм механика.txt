@@ -1,0 +1,132 @@
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <iostream>
+#include <vector>
+#include <ctime>
+#include <cstdlib>
+#include <unordered_set>
+
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 600;
+const std::vector<std::string> SPELLS = { "IGNIS", "WATER", "TERRA", "AERO" };
+
+std::string generateLetterString(int length) {
+    std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    std::string result;
+    std::unordered_set<char> neededLetters = { 'I', 'G', 'N', 'S', 'W', 'A', 'T', 'E', 'R', 'O' };
+
+    while (result.size() < length) {
+        char letter = letters[rand() % letters.size()];
+        result += letter;
+    }
+
+    for (char needed : neededLetters) {
+        result[rand() % length] = needed;
+    }
+
+    return result;
+}
+
+int main() {
+    srand(static_cast<unsigned int>(time(nullptr)));
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Magic Spell Casting");
+
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf")) {
+        std::cerr << "Error loading font!" << std::endl;
+        return -1;
+    }
+
+    std::string letterString = generateLetterString(20);
+    std::string castedSpell;
+
+    sf::Text lettersText(letterString, font, 30);
+    lettersText.setPosition(50, 50);
+    lettersText.setFillColor(sf::Color::White);
+
+    sf::Text castText("", font, 30);
+    castText.setPosition(50, 100);
+    castText.setFillColor(sf::Color::Yellow);
+
+    sf::Text resultText("", font, 30);
+    resultText.setPosition(50, 150);
+    resultText.setFillColor(sf::Color::Green);
+
+    sf::RectangleShape castButton(sf::Vector2f(200, 50));
+    castButton.setPosition(300, 500);
+    castButton.setFillColor(sf::Color(50, 50, 200));
+
+    sf::Text castButtonText("Cast", font, 30);
+    castButtonText.setPosition(340, 510);
+    castButtonText.setFillColor(sf::Color::White);
+
+    sf::RectangleShape background(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    background.setFillColor(sf::Color(30, 30, 40));
+
+    std::vector<sf::Text> letterTexts;
+    for (int i = 0; i < letterString.size(); ++i) {
+        sf::Text letterText(std::string(1, letterString[i]), font, 30);
+        letterText.setPosition(50 + i * 30, 50);
+        letterText.setFillColor(sf::Color::White);
+        letterTexts.push_back(letterText);
+    }
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                if (castButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                    bool success = false;
+                    for (const auto& spell : SPELLS) {
+                        if (castedSpell == spell) {
+                            resultText.setString("Successfully cast: " + spell + "!");
+                            success = true;
+                            castedSpell = "";
+                            break;
+                        }
+                    }
+
+                    if (!success) {
+                        resultText.setString("Failed to cast spell.");
+                    }
+
+                    castedSpell = "";
+                }
+
+                for (int i = 0; i < letterString.size(); ++i) {
+                    if (letterTexts[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                        castedSpell += toupper(letterString[i]);
+                        letterString = generateLetterString(20);
+                        letterTexts.clear();
+                        for (int i = 0; i < letterString.size(); ++i) {
+                            sf::Text letterText(std::string(1, letterString[i]), font, 30);
+                            letterText.setPosition(50 + i * 30, 50);
+                            letterText.setFillColor(sf::Color::White);
+                            letterTexts.push_back(letterText);
+                        }
+                    }
+                }
+            }
+        }
+
+        castText.setString("Cast: " + castedSpell);
+
+        window.clear();
+        window.draw(background);
+        for (const auto& letterText : letterTexts) {
+            window.draw(letterText);
+        }
+        window.draw(castText);
+        window.draw(resultText);
+        window.draw(castButton);
+        window.draw(castButtonText);
+        window.display();
+    }
+
+    return 0;
+}

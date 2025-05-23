@@ -1,0 +1,11 @@
+﻿  Cavedun.cpp
+C:\Users\user\source\repos\Cavedun\Cavedun\Cavedun.cpp(90,35): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\user\source\repos\Cavedun\Cavedun\Cavedun.cpp(120,55): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\user\source\repos\Cavedun\Cavedun\Cavedun.cpp(686,18): warning C4566: символ, представленный универсальным именем символа "\U0001F311", невозможно представить в текущей кодовой странице (1251)
+C:\Users\user\source\repos\Cavedun\Cavedun\Cavedun.cpp(686,18): warning C4566: символ, представленный универсальным именем символа "\U0001F315", невозможно представить в текущей кодовой странице (1251)
+C:\Users\user\source\repos\Cavedun\Cavedun\Cavedun.cpp(947,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\user\source\repos\Cavedun\Cavedun\Cavedun.cpp(951,16): warning C4566: символ, представленный универсальным именем символа "\U0001F9D9", невозможно представить в текущей кодовой странице (1251)
+C:\Users\user\source\repos\Cavedun\Cavedun\Cavedun.cpp(951,16): warning C4566: символ, представленный универсальным именем символа "\u200D", невозможно представить в текущей кодовой странице (1251)
+  Cavedun.vcxproj -> C:\Users\user\source\repos\Cavedun\x64\Debug\Cavedun.exe
+  C:\Users\user\source\repos\Cavedun\packages\SFML-cpp.redist.2.5.1.1\build\native\bin\x64\Debug\openal32.dll
+  Скопировано файлов: 1.
